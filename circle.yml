@@ -12,6 +12,7 @@ deployment:
     branch: master
     commands:
       - git clone --branch ${MASTODON_GIT_BRANCH:-master} ${MASTODON_GIT_URL:-https://github.com/tootsuite/mastodon.git}
+      - git -C mastodon show -s --format=%H > ${CIRCLE_ARTIFACTS}/commit_id 
       - docker build --tag mastodon mastodon
       - docker run --env SECRET_KEY_BASE=dummy --volume $(pwd)/mastodon/public/assets:/mastodon/public/assets mastodon bundle exec rake assets:precompile
       - rm mastodon/.dockerignore
